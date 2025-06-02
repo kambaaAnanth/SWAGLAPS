@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
+
 import com.swaglabs.testbase.BaseTest;
 
 public class CartPage extends BaseTest {
@@ -62,11 +63,11 @@ public class CartPage extends BaseTest {
 
 			if (productName.equals(prop.getProperty("product"))) {
 
-				Assert.assertTrue(true);
+				org.testng.Assert.assertTrue(true);
 
 			} else {
 
-				Assert.assertFalse(false, "Prodcut is not same");
+				org.testng.Assert.assertFalse(false, "Prodcut is not same");
 			}
 
 		}

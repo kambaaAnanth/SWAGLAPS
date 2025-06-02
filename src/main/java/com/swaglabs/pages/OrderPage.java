@@ -76,7 +76,7 @@ public class OrderPage extends BaseTest {
 
 		String expected = prop.getProperty("expectedText");
 
-		Assert.assertEquals(expected, actual, "Your order is not confirmed , Please check");
+		org.testng.Assert.assertEquals(expected, actual, "Your order is not confirmed , Please check");
 		
 		System.out.println("==========Your product is succefully Placed=============");
 	}
