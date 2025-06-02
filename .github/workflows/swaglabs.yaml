@@ -1,61 +1,84 @@
-name: Swag Labs Application Daily TestNG Run and Report
-'on':
+name: Selenium Tests - Daily Run and Report
+
+on:
+  # Triggers the workflow on pushes to the main branch
+  push:
+    branches: [ main ]
+  # Triggers the workflow on pull requests to the main branch
+  pull_request:
+    branches: [ main ]
+  # Schedule the workflow to run daily at 9:00 AM UTC
   schedule:
-    - cron: 0 9 * * *
-  workflow_dispatch: null
+    - cron: '0 9 * * *' # At 09:00 UTC every day
+  # Allows you to run this workflow manually from the Actions tab in GitHub
+  workflow_dispatch:
+
 jobs:
-  run-testng-tests:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest # Specifies the operating system for the job
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: temurin
-      - name: Build with Maven
-        run: mvn clean install -DskipTests
-      - name: Run TestNG tests
-        run: mvn test -DsuiteXmlFile=testng.xml
-      - name: Upload Test Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: target/surefire-reports
-      - name: Send email notification
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: '${{ secrets.MAIL_USERNAME }}'
-          password: '${{ secrets.MAIL_PASSWORD }}'
-          subject: 'TestNG Daily Run Report - ${{ job.status }}'
-          body: >
-            Hello,
+    - name: Checkout repository
+      uses: actions/checkout@v4 # Uses actions/checkout@v4 to check out your code
 
+    - name: Set up Java
+      uses: actions/setup-java@v4 # Uses actions/setup-java@v4 to set up the Java environment
+      with:
+        distribution: 'temurin' # Specifies the Temurin distribution of Java
+        java-version: '17' # Sets the Java version to 17
 
-            The daily TestNG test run has completed.
+    - name: Cache Maven packages
+      uses: actions/cache@v3 # Uses actions/cache@v3 to cache Maven dependencies for faster builds
+      with:
+        path: ~/.m2 # Specifies the path to cache Maven artifacts
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }} # Generates a cache key based on OS and pom.xml hash
+        restore-keys: |
+          ${{ runner.os }}-maven # Defines fallback keys for cache restoration
 
-            Status: ${{ job.status }}
+    - name: Build with Maven
+      run: mvn clean install -DskipTests # Cleans and installs Maven project, skipping tests for separate execution
 
+    - name: Run TestNG tests
+      # Executes TestNG tests using the testng.xml file.
+      # Ensure your testng.xml is at the root of your repository or specify the correct path.
+      run: mvn test -DsuiteXmlFile=testng.xml
 
-            You can view the workflow run details here:
+    - name: Upload Test Report
+      # Uploads the generated test reports as a workflow artifact, useful for reviewing results.
+      if: always() # Ensures this step runs even if previous steps (tests) fail
+      uses: actions/upload-artifact@v4 # Uses actions/upload-artifact@v4 to upload artifacts
+      with:
+        name: test-results # Name of the artifact
+        path: target/surefire-reports # Path to Maven Surefire reports. Adjust if using Failsafe or custom reports.
 
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{
-            github.run_id }}
+    - name: Send email notification
+      # Sends an email notification about the test run status.
+      # This step requires setting up GitHub Secrets for email credentials.
+      uses: dawidd6/action-send-mail@v3 # Uses dawidd6/action-send-mail@v3 for sending emails
+      with:
+        server_address: smtp.gmail.com # Your SMTP server address (e.g., smtp.gmail.com for Gmail)
+        server_port: 465 # Your SMTP server port (e.g., 465 for SSL)
+        username: ${{ secrets.MAIL_USERNAME }} # GitHub Secret for your email username
+        password: ${{ secrets.MAIL_PASSWORD }} # GitHub Secret for your email password (use an App Password for Gmail with 2FA)
+        subject: TestNG Daily Run Report - ${{ job.status }} # Email subject, dynamically includes the job status
+        body: | # The body of the email, using multi-line string
+          Hello,
 
+          The daily TestNG test run has completed.
+          Status: ${{ job.status }}
 
-            If test reports were generated, they are available as an artifact in
-            the workflow run.
+          You can view the workflow run details here:
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
+          If test reports were generated, they are available as an artifact in the workflow run.
 
-            Best regards,
-
-            Your CI/CD System
-          to: your-email@example.com
-          from: GitHub Actions <your-email@example.com>
-        env:
-          MAIL_USERNAME: '${{ secrets.MAIL_USERNAME }}'
-          MAIL_PASSWORD: '${{ secrets.MAIL_PASSWORD }}'
+          Best regards,
+          Your CI/CD System
+        to: ananthtesting96@gmail.com # The recipient email address for the report
+        from: GitHub Actions abhiramik.bca@gmail.com # The sender email address
+        # Optional: Uncomment and adjust the path if you want to attach a specific report file (e.g., emailable-report.html)
+        # attachments: target/surefire-reports/emailable-report.html
+      env:
+        # These environment variables are used by the action-send-mail action and should be securely stored as repository secrets.
+        MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+        MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
