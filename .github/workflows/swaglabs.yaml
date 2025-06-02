@@ -42,7 +42,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: test-output/emailable-report.html
+        path: target/surefire-reports
 
     - name: Send email notification
       if: always()
@@ -66,6 +66,7 @@ jobs:
           Your CI/CD System
         to: ananthtesting96@gmail.com
         from: GitHub Actions <abhiramik.bca@gmail.com>
+        attachments: target/surefire-reports/emailable-report.html
       env:
         MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
         MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
