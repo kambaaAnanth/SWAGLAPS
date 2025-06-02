@@ -42,7 +42,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: target/surefire-reports
+        path: test-output/emailable-report.html
 
     - name: Send email notification
       if: always()
