@@ -37,6 +37,9 @@ public class BaseTest {
 		if (browserName.equals("chrome")) {
 			WebDriverManager.chromedriver().setup();
 			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--headless=new");
+options.addArguments("--no-sandbox");
+options.addArguments("--disable-dev-shm-usage");
 			options.addArguments("--incognito"); // Run in incognito mode
 			driver = new ChromeDriver(options);
 		} else if (browserName.equals("FF")) {
