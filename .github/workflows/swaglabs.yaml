@@ -1,4 +1,4 @@
-name: Daily TestNG Run and Report
+name: Swag Labs Application Daily TestNG Run and Report
 'on':
   schedule:
     - cron: 0 9 * * *
