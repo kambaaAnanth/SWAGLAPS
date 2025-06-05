@@ -6,7 +6,10 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 9 * * *' # At 09:00 IST every day
+    # Daily run at 9:00 AM IST (3:30 AM UTC)
+    - cron: '30 3 * * *'
+    # Daily run at 8:00 PM IST (2:30 PM UTC)
+    - cron: '30 14 * * *'
   workflow_dispatch:
 
 jobs:
@@ -64,7 +67,7 @@ jobs:
 
           Best regards,
           Your CI/CD System
-        to: ananthtesting96@gmail.com
+        to: ananthtesting96@gmail.com,ananth021996@gmail.com,ananthsanjeevan@gmail.com
         from: GitHub Actions <abhiramik.bca@gmail.com>
         attachments: target/surefire-reports/emailable-report.html
       env:
