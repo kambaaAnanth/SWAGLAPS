@@ -35,7 +35,7 @@ public class SignUpTest extends BaseTest {
         }else {
             Assert.assertFalse(false, "Registration failed");
         }
-        System.out.println("Success");
+        System.out.println("Registration Success");
     }
 }
 
