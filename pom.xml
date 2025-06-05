@@ -42,6 +42,10 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>7.11.0</version>
+<<<<<<< HEAD
+=======
+			
+>>>>>>> branch 'master' of https://github.com/kambaaAnanth/SWAGLAPS.git
 		</dependency>
 		<!--
 		https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
@@ -145,6 +149,7 @@
 					<version>3.6.1</version>
 				</plugin>
 				<plugin>
+<<<<<<< HEAD
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.2.5</version>
@@ -164,6 +169,25 @@
 						</suiteXmlFiles>
 					</configuration>
 				</plugin>
+=======
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version> <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+>>>>>>> branch 'master' of https://github.com/kambaaAnanth/SWAGLAPS.git
 			</plugins>
 		</pluginManagement>
 	</build>
